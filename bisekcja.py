@@ -1,31 +1,24 @@
-#!/usr/bin/env python
-from sympy import *
-from sympy.calculus.util import *
+import sympy as sp
 
-init_printing()
+x = sp.symbols('x')
 
-x = symbols('x')
-f = Lambda(x, x**2 - 11)
+f=3 * x**3 - 25
+eps=1e-4
 
-a, b = (S(3), S(4))
-c = (a + b) / 2
+k=1
+przedzial=[-1, 3]
+p=0
 
-k = 1
-eps = 10**-5
-while true:
-    if k > 15:
+while True:
+    p=(przedzial[0] + przedzial[1])/2
+
+    print(f'\nprzedzial: [{przedzial[0]};{przedzial[1]}]\np{k} = {p}\nf(x)={f.evalf(subs={x: p})}')
+    if (abs(f.evalf(subs={x: p})) < eps or f.evalf(subs={x: p}) == 0):
         break
 
-    print(f"{k}\n\tf(c = {c.evalf()}) = {f(c.evalf())}\n")
-
-    c = (a + b) / 2
-
-    if abs(f(c)) < eps:
-        break
-
-    if sign(f(c)) == sign(f(a)):
-        a = c
+    if sp.sign(f.evalf(subs={x: przedzial[0]}))==sp.sign(f.evalf(subs={x: p})):
+        przedzial[0]=p
     else:
-        b = c
-
-    k = k + 1
+        przedzial[1]=p
+    
+    k+=1
